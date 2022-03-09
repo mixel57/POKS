@@ -1,0 +1,95 @@
+using System;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Vijener
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        // Зашифровать
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+            char[] phrase = textBox1.Text.ToCharArray();
+            phrase = phrase.Where(val => val != ' ').ToArray();
+            char[] key = textBox2.Text.ToCharArray();
+            key = key.Where(val => val != ' ').ToArray();
+            string [] phrase2 = new string[phrase.Length];
+            Array.Resize(ref key, phrase.Length);
+            int currentword = 0, keyword = textBox2.Text.Length;
+            string num1, num2; int num3;
+            for (int i = 0; i < phrase.Length; i++) // После проработки массива длины строки ключа стала = длины строки исходной фразы
+            {
+                if (i > keyword - 1)
+                {
+                    key[i] = key[currentword];
+                    currentword++;
+                    if (currentword + 1 > keyword)
+                    {
+                        currentword = 0;
+                    }
+                }
+                num1 = Convert.ToString(alphabet.IndexOf(phrase[i])); 
+                num2 = Convert.ToString(alphabet.IndexOf(key[i]));    
+                num3 = Convert.ToInt32(num1) + Convert.ToInt32(num2);
+                if (num3 > 32)
+                {
+                    num3 -= 33;
+                    phrase2[i] = Convert.ToString(alphabet[num3]);
+                }
+                else
+                {
+                    phrase2[i] = Convert.ToString(alphabet[num3]);
+                }
+            }
+            string Newphrase = string.Join("", phrase2);
+            textBox3.Text = Convert.ToString(Newphrase);
+        }
+
+        // Расшифровать
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string alphabet = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+            char[] phrase = textBox1.Text.ToCharArray();
+            phrase = phrase.Where(val => val != ' ').ToArray();
+            char[] key = textBox2.Text.ToCharArray();
+            key = key.Where(val => val != ' ').ToArray();
+            string[] phrase2 = new string[phrase.Length];
+            Array.Resize(ref key, phrase.Length);
+            int currentword = 0, keyword = textBox2.Text.Length;
+            string num1, num2; int num3;
+            for (int i = 0; i < phrase.Length; i++) // После проработки массива длины строки ключа стала = длины строки исходной фразы
+            {
+                if (i > keyword - 1)
+                {
+                    key[i] = key[currentword];
+                    currentword++;
+                    if (currentword + 1 > keyword)
+                    {
+                        currentword = 0;
+                    }
+                }
+                num1 = Convert.ToString(alphabet.IndexOf(phrase[i])); 
+                num2 = Convert.ToString(alphabet.IndexOf(key[i]));    
+                num3 = Convert.ToInt32(num1) - Convert.ToInt32(num2);
+                if (num3 < 0)
+                {
+                    num3 += 33;
+                    phrase2[i] = Convert.ToString(alphabet[num3]);
+                }
+                else
+                {
+                    phrase2[i] = Convert.ToString(alphabet[num3]);
+                }
+            }
+            string Newphrase = string.Join("", phrase2);
+            textBox3.Text = Convert.ToString(Newphrase);
+        }
+    }
+}
